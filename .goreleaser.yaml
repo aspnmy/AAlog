@@ -17,7 +17,7 @@ builds:
     goarch:
       - amd64
     ldflags:
-      - -s -w -X github.com/sjzar/chatlog/pkg/version.Version={{.Version}}
+      - -s -w -X github.com/aspnmy/chatlog/pkg/version.Version={{.Version}}
 
   - id: darwin-arm64
     binary: chatlog
@@ -30,7 +30,7 @@ builds:
     goarch:
       - arm64
     ldflags:
-      - -s -w -X github.com/sjzar/chatlog/pkg/version.Version={{.Version}}
+      - -s -w -X github.com/aspnmy/chatlog/pkg/version.Version={{.Version}}
 
   - id: windows-amd64
     binary: chatlog
@@ -43,7 +43,7 @@ builds:
     goarch:
       - amd64
     ldflags:
-      - -s -w -X github.com/sjzar/chatlog/pkg/version.Version={{.Version}}
+      - -s -w -X github.com/aspnmy/chatlog/pkg/version.Version={{.Version}}
 
   - id: windows-arm64
     binary: chatlog
@@ -56,7 +56,7 @@ builds:
     goarch:
       - arm64
     ldflags:
-      - -s -w -X github.com/sjzar/chatlog/pkg/version.Version={{.Version}}
+      - -s -w -X github.com/aspnmy/chatlog/pkg/version.Version={{.Version}}
 
 archives:
   - id: default

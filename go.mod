@@ -1,4 +1,4 @@
-module github.com/sjzar/chatlog
+module github.com/aspnmy/chatlog
 
 go 1.24.0
 
@@ -15,8 +15,8 @@ require (
 	github.com/rs/zerolog v1.34.0
 	github.com/shirou/gopsutil/v4 v4.25.7
 	github.com/sirupsen/logrus v1.9.3
-	github.com/sjzar/go-lame v0.0.9
-	github.com/sjzar/go-silk v0.0.1
+	github.com/aspnmy/go-lame v0.0.9
+	github.com/aspnmy/go-silk v0.0.1
 	github.com/spf13/cobra v1.9.1
 	github.com/spf13/viper v1.20.1
 	golang.org/x/crypto v0.41.0
@@ -64,7 +64,6 @@ require (
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.3.0 // indirect
 	github.com/yusufpapurcu/wmi v1.2.4 // indirect
-	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/arch v0.20.0 // indirect
 	golang.org/x/net v0.43.0 // indirect
 	golang.org/x/term v0.34.0 // indirect

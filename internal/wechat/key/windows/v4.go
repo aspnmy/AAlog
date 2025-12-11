@@ -15,7 +15,7 @@ func NewV4Extractor() *V4Extractor {
 }
 
 func (e *V4Extractor) SearchKey(ctx context.Context, memory []byte) (string, bool) {
-	// TODO : Implement the key search logic for V4
+	// TODO: 实现V4版本的密钥搜索逻辑
 	return "", false
 }
 
