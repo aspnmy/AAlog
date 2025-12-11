@@ -4,9 +4,9 @@ import (
 	"context"
 	"runtime"
 
-	"github.com/sjzar/chatlog/internal/errors"
-	"github.com/sjzar/chatlog/internal/wechat/model"
-	"github.com/sjzar/chatlog/internal/wechat/process"
+	"github.com/aspnmy/chatlog/internal/errors"
+	"github.com/aspnmy/chatlog/internal/wechat/model"
+	"github.com/aspnmy/chatlog/internal/wechat/process"
 )
 
 var DefaultManager *Manager

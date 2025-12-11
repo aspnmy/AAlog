@@ -3,8 +3,8 @@ package footer
 import (
 	"fmt"
 
-	"github.com/sjzar/chatlog/internal/ui/style"
-	"github.com/sjzar/chatlog/pkg/version"
+	"github.com/aspnmy/chatlog/internal/ui/style"
+	"github.com/aspnmy/chatlog/pkg/version"
 
 	"github.com/rivo/tview"
 )

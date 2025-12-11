@@ -1,7 +1,7 @@
 package model
 
 import (
-	"github.com/sjzar/chatlog/internal/model/wxproto"
+	"github.com/aspnmy/chatlog/internal/model/wxproto"
 
 	"google.golang.org/protobuf/proto"
 )

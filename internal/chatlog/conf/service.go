@@ -5,7 +5,7 @@ import (
 	"os"
 	"sync"
 
-	"github.com/sjzar/chatlog/pkg/config"
+	"github.com/aspnmy/chatlog/pkg/config"
 )
 
 const (

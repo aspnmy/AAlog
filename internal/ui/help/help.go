@@ -3,7 +3,7 @@ package help
 import (
 	"fmt"
 
-	"github.com/sjzar/chatlog/internal/ui/style"
+	"github.com/aspnmy/chatlog/internal/ui/style"
 
 	"github.com/rivo/tview"
 )

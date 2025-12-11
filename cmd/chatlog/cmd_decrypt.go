@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"runtime"
 
-	"github.com/sjzar/chatlog/internal/chatlog"
+	"github.com/aspnmy/chatlog/internal/chatlog"
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"

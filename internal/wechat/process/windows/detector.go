@@ -6,8 +6,8 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/shirou/gopsutil/v4/process"
 
-	"github.com/sjzar/chatlog/internal/wechat/model"
-	"github.com/sjzar/chatlog/pkg/appver"
+	"github.com/aspnmy/chatlog/internal/wechat/model"
+	"github.com/aspnmy/chatlog/pkg/appver"
 )
 
 const (

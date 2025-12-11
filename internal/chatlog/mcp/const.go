@@ -1,7 +1,7 @@
 package mcp
 
 import (
-	"github.com/sjzar/chatlog/internal/mcp"
+	"github.com/aspnmy/chatlog/internal/mcp"
 )
 
 // MCPTools 和资源定义

@@ -13,24 +13,27 @@ import (
 	"github.com/rs/zerolog/log"
 	"golang.org/x/sys/windows"
 
-	"github.com/sjzar/chatlog/internal/errors"
-	"github.com/sjzar/chatlog/internal/wechat/model"
-	"github.com/sjzar/chatlog/pkg/util"
+	"github.com/aspnmy/chatlog/internal/errors"
+	"github.com/aspnmy/chatlog/internal/wechat/model"
+	"github.com/aspnmy/chatlog/pkg/util"
 )
 
 const (
 	V3ModuleName = "WeChatWin.dll" // V3版本微信的主模块名称
-	MaxWorkers   = 16             // 最大工作协程数
+	MaxWorkers   = 16              // 最大工作协程数
 )
 
 // Extract 从微信进程中提取V3版本密钥
 // 参数：
-//   ctx: 上下文，用于控制提取过程
-//   proc: 微信进程信息
+//
+//	ctx: 上下文，用于控制提取过程
+//	proc: 微信进程信息
+//
 // 返回：
-//   dataKey: 数据密钥
-//   imgKey: 图片密钥（V3版本不返回图片密钥）
-//   error: 错误信息
+//
+//	dataKey: 数据密钥
+//	imgKey: 图片密钥（V3版本不返回图片密钥）
+//	error: 错误信息
 func (e *V3Extractor) Extract(ctx context.Context, proc *model.Process) (string, string, error) {
 	if proc.Status == model.StatusOffline {
 		return "", "", errors.ErrWeChatOffline
@@ -111,12 +114,15 @@ func (e *V3Extractor) Extract(ctx context.Context, proc *model.Process) (string,
 
 // findMemory 搜索WeChatWin.dll中的可写内存区域（V3版本）
 // 参数：
-//   ctx: 上下文，用于控制搜索过程
-//   handle: 进程句柄
-//   pid: 进程ID
-//   memoryChannel: 用于传递内存数据的通道
+//
+//	ctx: 上下文，用于控制搜索过程
+//	handle: 进程句柄
+//	pid: 进程ID
+//	memoryChannel: 用于传递内存数据的通道
+//
 // 返回：
-//   error: 错误信息
+//
+//	error: 错误信息
 func (e *V3Extractor) findMemory(ctx context.Context, handle windows.Handle, pid uint32, memoryChannel chan<- []byte) error {
 	// 查找WeChatWin.dll模块
 	module, isFound := FindModule(pid, V3ModuleName)
@@ -173,11 +179,12 @@ func (e *V3Extractor) findMemory(ctx context.Context, handle windows.Handle, pid
 
 // worker 处理内存区域以查找V3版本密钥
 // 参数：
-//   ctx: 上下文，用于控制工作协程
-//   handle: 进程句柄
-//   is64Bit: 进程是否为64位
-//   memoryChannel: 用于接收内存数据的通道
-//   resultChannel: 用于发送结果的通道
+//
+//	ctx: 上下文，用于控制工作协程
+//	handle: 进程句柄
+//	is64Bit: 进程是否为64位
+//	memoryChannel: 用于接收内存数据的通道
+//	resultChannel: 用于发送结果的通道
 func (e *V3Extractor) worker(ctx context.Context, handle windows.Handle, is64Bit bool, memoryChannel <-chan []byte, resultChannel chan<- string) {
 	// 定义搜索模式
 	keyPattern := []byte{0x20, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
@@ -234,10 +241,13 @@ func (e *V3Extractor) worker(ctx context.Context, handle windows.Handle, is64Bit
 
 // validateKey 验证单个密钥候选
 // 参数：
-//   handle: 进程句柄
-//   addr: 密钥在内存中的地址
+//
+//	handle: 进程句柄
+//	addr: 密钥在内存中的地址
+//
 // 返回：
-//   string: 有效的密钥（如果验证成功）
+//
+//	string: 有效的密钥（如果验证成功）
 func (e *V3Extractor) validateKey(handle windows.Handle, addr uint64) string {
 	keyData := make([]byte, 0x20) // 32字节密钥
 	if err := windows.ReadProcessMemory(handle, uintptr(addr), &keyData[0], uintptr(len(keyData)), nil); err != nil {
@@ -254,11 +264,14 @@ func (e *V3Extractor) validateKey(handle windows.Handle, addr uint64) string {
 
 // FindModule 在进程中搜索指定模块
 // 参数：
-//   pid: 进程ID
-//   name: 模块名称
+//
+//	pid: 进程ID
+//	name: 模块名称
+//
 // 返回：
-//   module: 模块信息
-//   isFound: 是否找到模块
+//
+//	module: 模块信息
+//	isFound: 是否找到模块
 func FindModule(pid uint32, name string) (module windows.ModuleEntry32, isFound bool) {
 	// 创建模块快照
 	snapshot, err := windows.CreateToolhelp32Snapshot(windows.TH32CS_SNAPMODULE|windows.TH32CS_SNAPMODULE32, pid)

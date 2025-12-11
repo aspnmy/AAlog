@@ -4,9 +4,9 @@ import (
 	"context"
 	"time"
 
-	"github.com/sjzar/chatlog/internal/model"
-	"github.com/sjzar/chatlog/internal/wechatdb/datasource"
-	"github.com/sjzar/chatlog/internal/wechatdb/repository"
+	"github.com/aspnmy/chatlog/internal/model"
+	"github.com/aspnmy/chatlog/internal/wechatdb/datasource"
+	"github.com/aspnmy/chatlog/internal/wechatdb/repository"
 
 	_ "github.com/mattn/go-sqlite3"
 )

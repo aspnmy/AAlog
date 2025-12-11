@@ -12,8 +12,8 @@ import (
 	"github.com/rs/zerolog/log"
 	"golang.org/x/sys/windows"
 
-	"github.com/sjzar/chatlog/internal/errors"
-	"github.com/sjzar/chatlog/internal/wechat/model"
+	"github.com/aspnmy/chatlog/internal/errors"
+	"github.com/aspnmy/chatlog/internal/wechat/model"
 )
 
 const (

@@ -9,10 +9,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/sjzar/chatlog/internal/chatlog/ctx"
-	"github.com/sjzar/chatlog/internal/chatlog/database"
-	"github.com/sjzar/chatlog/internal/mcp"
-	"github.com/sjzar/chatlog/pkg/util"
+	"github.com/aspnmy/chatlog/internal/chatlog/ctx"
+	"github.com/aspnmy/chatlog/internal/chatlog/database"
+	"github.com/aspnmy/chatlog/internal/mcp"
+	"github.com/aspnmy/chatlog/pkg/util"
 
 	"github.com/gin-gonic/gin"
 )

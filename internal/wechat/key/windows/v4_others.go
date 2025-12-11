@@ -5,7 +5,7 @@ package windows
 import (
 	"context"
 
-	"github.com/sjzar/chatlog/internal/wechat/model"
+	"github.com/aspnmy/chatlog/internal/wechat/model"
 )
 
 // Extract 从进程中提取密钥（非Windows平台实现）

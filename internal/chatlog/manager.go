@@ -6,16 +6,16 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/aspnmy/chatlog/internal/chatlog/conf"
+	"github.com/aspnmy/chatlog/internal/chatlog/ctx"
+	"github.com/aspnmy/chatlog/internal/chatlog/database"
+	"github.com/aspnmy/chatlog/internal/chatlog/http"
+	"github.com/aspnmy/chatlog/internal/chatlog/mcp"
+	"github.com/aspnmy/chatlog/internal/chatlog/wechat"
+	iwechat "github.com/aspnmy/chatlog/internal/wechat"
+	"github.com/aspnmy/chatlog/pkg/util"
+	"github.com/aspnmy/chatlog/pkg/util/dat2img"
 	"github.com/rs/zerolog/log"
-	"github.com/sjzar/chatlog/internal/chatlog/conf"
-	"github.com/sjzar/chatlog/internal/chatlog/ctx"
-	"github.com/sjzar/chatlog/internal/chatlog/database"
-	"github.com/sjzar/chatlog/internal/chatlog/http"
-	"github.com/sjzar/chatlog/internal/chatlog/mcp"
-	"github.com/sjzar/chatlog/internal/chatlog/wechat"
-	iwechat "github.com/sjzar/chatlog/internal/wechat"
-	"github.com/sjzar/chatlog/pkg/util"
-	"github.com/sjzar/chatlog/pkg/util/dat2img"
 )
 
 // Manager 管理聊天日志应用

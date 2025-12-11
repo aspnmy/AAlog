@@ -3,8 +3,8 @@ package silk
 import (
 	"fmt"
 
-	"github.com/sjzar/go-lame"
-	"github.com/sjzar/go-silk"
+	"github.com/aspnmy/go-lame"
+	"github.com/aspnmy/go-silk"
 )
 
 func Silk2MP3(data []byte) ([]byte, error) {

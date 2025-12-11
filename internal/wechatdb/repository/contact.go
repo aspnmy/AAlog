@@ -5,8 +5,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/sjzar/chatlog/internal/errors"
-	"github.com/sjzar/chatlog/internal/model"
+	"github.com/aspnmy/chatlog/internal/errors"
+	"github.com/aspnmy/chatlog/internal/model"
 )
 
 // initContactCache 初始化联系人缓存

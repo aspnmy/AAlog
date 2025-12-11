@@ -4,9 +4,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/sjzar/chatlog/internal/chatlog/conf"
-	"github.com/sjzar/chatlog/internal/wechat"
-	"github.com/sjzar/chatlog/pkg/util"
+	"github.com/aspnmy/chatlog/internal/chatlog/conf"
+	"github.com/aspnmy/chatlog/internal/wechat"
+	"github.com/aspnmy/chatlog/pkg/util"
 )
 
 // Context is a context for a chatlog.

@@ -9,10 +9,10 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/sjzar/chatlog/internal/errors"
-	"github.com/sjzar/chatlog/pkg/util"
-	"github.com/sjzar/chatlog/pkg/util/dat2img"
-	"github.com/sjzar/chatlog/pkg/util/silk"
+	"github.com/aspnmy/chatlog/internal/errors"
+	"github.com/aspnmy/chatlog/pkg/util"
+	"github.com/aspnmy/chatlog/pkg/util/dat2img"
+	"github.com/aspnmy/chatlog/pkg/util/silk"
 
 	"github.com/gin-gonic/gin"
 )

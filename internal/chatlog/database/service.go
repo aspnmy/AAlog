@@ -3,9 +3,9 @@ package database
 import (
 	"time"
 
-	"github.com/sjzar/chatlog/internal/chatlog/ctx"
-	"github.com/sjzar/chatlog/internal/model"
-	"github.com/sjzar/chatlog/internal/wechatdb"
+	"github.com/aspnmy/chatlog/internal/chatlog/ctx"
+	"github.com/aspnmy/chatlog/internal/model"
+	"github.com/aspnmy/chatlog/internal/wechatdb"
 )
 
 type Service struct {

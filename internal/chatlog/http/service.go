@@ -5,10 +5,10 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/sjzar/chatlog/internal/chatlog/ctx"
-	"github.com/sjzar/chatlog/internal/chatlog/database"
-	"github.com/sjzar/chatlog/internal/chatlog/mcp"
-	"github.com/sjzar/chatlog/internal/errors"
+	"github.com/aspnmy/chatlog/internal/chatlog/ctx"
+	"github.com/aspnmy/chatlog/internal/chatlog/database"
+	"github.com/aspnmy/chatlog/internal/chatlog/mcp"
+	"github.com/aspnmy/chatlog/internal/errors"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"

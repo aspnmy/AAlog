@@ -3,7 +3,7 @@ package infobar
 import (
 	"fmt"
 
-	"github.com/sjzar/chatlog/internal/ui/style"
+	"github.com/aspnmy/chatlog/internal/ui/style"
 
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"

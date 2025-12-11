@@ -11,12 +11,12 @@ import (
 	"github.com/fsnotify/fsnotify"
 	"github.com/rs/zerolog/log"
 
-	"github.com/sjzar/chatlog/internal/chatlog/ctx"
-	"github.com/sjzar/chatlog/internal/errors"
-	"github.com/sjzar/chatlog/internal/wechat"
-	"github.com/sjzar/chatlog/internal/wechat/decrypt"
-	"github.com/sjzar/chatlog/pkg/filemonitor"
-	"github.com/sjzar/chatlog/pkg/util"
+	"github.com/aspnmy/chatlog/internal/chatlog/ctx"
+	"github.com/aspnmy/chatlog/internal/errors"
+	"github.com/aspnmy/chatlog/internal/wechat"
+	"github.com/aspnmy/chatlog/internal/wechat/decrypt"
+	"github.com/aspnmy/chatlog/pkg/filemonitor"
+	"github.com/aspnmy/chatlog/pkg/util"
 )
 
 var (
