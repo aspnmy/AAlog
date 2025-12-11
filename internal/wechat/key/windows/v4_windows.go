@@ -1,9 +1,7 @@
 package windows
 
 import (
-	"bytes"
 	"context"
-	"encoding/binary"
 	"encoding/hex"
 	"runtime"
 	"sync"
@@ -141,11 +139,18 @@ func (e *V4Extractor) findMemory(ctx context.Context, handle windows.Handle, mem
 	if runtime.GOARCH == "amd64" {
 		maxAddr = uintptr(0x7FFFFFFFFFFF) // 64位进程空间限制
 	}
-	log.Debug().Msgf("扫描内存区域从 0x%X 到 0x%X", minAddr, maxAddr)
+	log.Info().Msgf("开始扫描内存区域从 0x%X 到 0x%X", minAddr, maxAddr)
 
 	currentAddr := minAddr
+	regionCount := 0
 
 	for currentAddr < maxAddr {
+		select {
+		case <-ctx.Done():
+			return nil
+		default:
+		}
+
 		var memInfo windows.MemoryBasicInformation
 		err := windows.VirtualQueryEx(handle, currentAddr, &memInfo, unsafe.Sizeof(memInfo))
 		if err != nil {
@@ -171,7 +176,11 @@ func (e *V4Extractor) findMemory(ctx context.Context, handle windows.Handle, mem
 			if err = windows.ReadProcessMemory(handle, currentAddr, &memory[0], regionSize, nil); err == nil {
 				select {
 				case memoryChannel <- memory:
-					log.Debug().Msgf("用于分析的内存区域: 0x%X - 0x%X, 大小: %d 字节", currentAddr, currentAddr+regionSize, regionSize)
+					regionCount++
+					// 每处理10个区域记录一次日志，避免过多日志输出
+					if regionCount%10 == 0 {
+						log.Info().Msgf("已处理 %d 个内存区域", regionCount)
+					}
 				case <-ctx.Done():
 					return nil
 				}
@@ -182,6 +191,7 @@ func (e *V4Extractor) findMemory(ctx context.Context, handle windows.Handle, mem
 		currentAddr = uintptr(memInfo.BaseAddress) + uintptr(memInfo.RegionSize)
 	}
 
+	log.Info().Msgf("内存扫描完成，共处理 %d 个内存区域", regionCount)
 	return nil
 }
 
@@ -193,18 +203,8 @@ func (e *V4Extractor) findMemory(ctx context.Context, handle windows.Handle, mem
 //	memoryChannel: 用于接收内存数据的通道
 //	resultChannel: 用于发送结果的通道
 func (e *V4Extractor) worker(ctx context.Context, handle windows.Handle, memoryChannel <-chan []byte, resultChannel chan<- [2]string) {
-	// 定义搜索模式（V4版本）
-	keyPattern := []byte{
-		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-		0x20, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-		0x2F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-	}
-	ptrSize := 8
-	littleEndianFunc := binary.LittleEndian.Uint64
-
 	// 跟踪找到的密钥
 	var dataKey, imgKey string
-	keysFound := make(map[uint64]bool) // 跟踪已处理的地址以避免重复
 
 	for {
 		select {
@@ -222,64 +222,60 @@ func (e *V4Extractor) worker(ctx context.Context, handle windows.Handle, memoryC
 				return
 			}
 
-			index := len(memory)
-			for {
-				select {
-				case <-ctx.Done():
-					return // 如果上下文取消则退出
-				default:
-				}
+			// 检查是否已经找到两个密钥，如果是则跳过处理
+			select {
+			case <-ctx.Done():
+				return
+			default:
+			}
 
-				// 从末尾向前查找模式
-				index = bytes.LastIndex(memory[:index], keyPattern)
-				if index == -1 || index-ptrSize < 0 {
-					break
-				}
-
-				// 提取并验证指针值
-				ptrValue := littleEndianFunc(memory[index-ptrSize : index])
-				if ptrValue > 0x10000 && ptrValue < 0x7FFFFFFFFFFF {
-					// 如果我们已经处理过这个地址，则跳过
-					if keysFound[ptrValue] {
-						index -= 1
-						continue
-					}
-					keysFound[ptrValue] = true
-
-					// 验证密钥并确定类型
-					if key, isImgKey := e.validateKey(handle, ptrValue); key != "" {
-						if isImgKey {
-							if imgKey == "" {
-								imgKey = key
-								log.Debug().Msg("找到图片密钥: " + key)
-								// 找到后立即报告
-								select {
-								case resultChannel <- [2]string{dataKey, imgKey}:
-								case <-ctx.Done():
-									return
-								}
-							}
-						} else {
-							if dataKey == "" {
-								dataKey = key
-								log.Debug().Msg("找到数据密钥: " + key)
-								// 找到后立即报告
-								select {
-								case resultChannel <- [2]string{dataKey, imgKey}:
-								case <-ctx.Done():
-									return
-								}
+			// 使用SearchKey方法搜索密钥（该方法会并行执行所有搜索策略）
+			if key, found := e.SearchKey(ctx, memory); found {
+				// 验证密钥类型
+				keyData, err := hex.DecodeString(key)
+				if err == nil {
+					// 检查是数据密钥还是图片密钥
+					if len(keyData) == 32 && e.validator.Validate(keyData) {
+						if dataKey == "" {
+							dataKey = key
+							log.Info().Msg("找到数据密钥")
+							// 找到后立即报告
+							select {
+							case resultChannel <- [2]string{dataKey, imgKey}:
+							case <-ctx.Done():
+								return
 							}
 						}
-
-						// 如果我们有两个密钥，退出工作协程
-						if dataKey != "" && imgKey != "" {
-							log.Debug().Msg("找到两个密钥，工作协程退出")
-							return
+					} else if len(keyData) == 16 && e.validator.ValidateImgKey(keyData) {
+						if imgKey == "" {
+							imgKey = key
+							log.Info().Msg("找到图片密钥")
+							// 找到后立即报告
+							select {
+							case resultChannel <- [2]string{dataKey, imgKey}:
+							case <-ctx.Done():
+								return
+							}
+						}
+					} else if len(keyData) == 32 && e.validator.ValidateImgKey(keyData) {
+						if imgKey == "" {
+							imgKey = key[:32] // 图片密钥只需要前16字节
+							log.Info().Msg("找到图片密钥")
+							// 找到后立即报告
+							select {
+							case resultChannel <- [2]string{dataKey, imgKey}:
+							case <-ctx.Done():
+								return
+							}
 						}
 					}
+
+					// 如果我们有两个密钥，退出工作协程
+					if dataKey != "" && imgKey != "" {
+						log.Info().Msg("找到两个密钥，工作协程退出")
+						return
+					}
 				}
-				index -= 1 // 从之前的位置继续搜索
 			}
 		}
 	}

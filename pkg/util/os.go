@@ -121,8 +121,8 @@ func PrepareDir(path string) error {
 	stat, err := os.Stat(path)
 	if err != nil {
 		if os.IsNotExist(err) {
-			if err := os.MkdirAll(path, 0755); err != nil {
-				return err
+			if mkdirErr := os.MkdirAll(path, 0755); mkdirErr != nil {
+				return mkdirErr
 			}
 		} else {
 			return err

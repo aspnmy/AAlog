@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-var zoneStr = time.Now().Format("-0700")
+
 
 // 时间粒度常量
 type TimeGranularity int

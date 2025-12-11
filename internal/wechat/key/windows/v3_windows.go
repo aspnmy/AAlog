@@ -285,13 +285,14 @@ func FindModule(pid uint32, name string) (module windows.ModuleEntry32, isFound 
 	module.Size = uint32(windows.SizeofModuleEntry32)
 
 	// 获取第一个模块
-	if err := windows.Module32First(snapshot, &module); err != nil {
-		log.Debug().Msgf("为PID %d 获取第一个模块失败: %v", pid, err)
+	if firstErr := windows.Module32First(snapshot, &module); firstErr != nil {
+		log.Debug().Msgf("为PID %d 获取第一个模块失败: %v", pid, firstErr)
 		return module, false
 	}
 
 	// 遍历所有模块查找WeChatWin.dll
-	for ; err == nil; err = windows.Module32Next(snapshot, &module) {
+	var nextErr error
+	for ; nextErr == nil; nextErr = windows.Module32Next(snapshot, &module) {
 		if windows.UTF16ToString(module.Module[:]) == name {
 			return module, true
 		}
